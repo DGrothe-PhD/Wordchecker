@@ -1,0 +1,18 @@
+﻿# Das Projekt
+
+Das Projekt enthält ein Python-Skript. Hierbei werden Wörter gezählt. In einem Ordner gespeicherte Textdateien werden von Python ausgelesen und die ausgewerteten Wortlisten gespeichert. Die verwendeten Textdateien bleiben dabei unverändert. Kommen manche Wörter mehrfach vor, so erkennt man das an der Zahl. Die Zahl ist tabstoppgetrennt hinter dem jeweiligen Wort angegeben. Insofern kann eine solche Auswertung auch dazu dienen, die Wortliste weiterzuverarbeiten, indem man sie mit einer Spreadsheet-Anwendung, z. B. Excel, öffnet, wo das Ergebnis dann weiter analysiert werden kann.
+
+# Zielsetzung
+
+Es soll eine Schnelldurchsicht nach verwendeten Wörtern ermöglicht werden. Uneinheitlichkeiten (denselben Begriff mal mit Bindestrich und mal ohne) oder Tippfehler sowie OCR-Erkennungsfehler lassen sich leichter auffinden.
+
+# Funktionsweise
+
+Es werden einige Zeichen, vor allem Kommas, Punkte sowie außen stehende Klammern, entfernt, bevor ein Wort registriert wird. Dies glättet den Wortschatz etwas, durch Beibehaltung der Zeichen, die im Wort auftauchen, werden allerdings auch Tippfehler wie fehlende Leerzeichen nach einer schließenden Klammer registriert. Andererseits werden auch die URLs unverändert belassen, damit etwa Low-Level-Domains nicht als Einzelwortbrocken mitzählen.
+
+Um auch europäische Sprachen außer Englisch verwenden zu können, speichert man die Textdateien am besten im UTF-8-Format, dies ermöglicht der Windows bekannte Editor in den heutigen Windows-Versionen üblicherweise durch einen einfachen Mausklick. Apostrophs und Wörter mit Nicht-ASCII-Buchstaben (étagère, ça) sollten so ebenfalls korrekt verarbeitet werden.
+
+# Zukünftige Weiterentwicklung
+
+ * Es ist daran gedacht, zusätzlich andere Ausgabeformate anzubieten.
+ * Eine übersichtliche Hervorhebung von ähnlichen Begriffen ist angestrebt.

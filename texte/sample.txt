@@ -1,0 +1,16 @@
+Optical storage of information is at least as old as writing. Digital data storage and
+processing with the help of machines became useful as soon as the population of
+the US increased. At the time, it would have taken more than ten years to finish the
+statistics of the 63 million people. The invention of punched cards made of stiff paper
+and of the tabulating machines by Herman Hollerith vastly accelerated the evaluation
+of the US census in the year 1890, which was completed within 18 months [1]. The
+idea of using punched paper by machines was not entirely new, it had earlier been
+used in Jacquard looms, permitting the industrial production of fabric with arbitrary
+patterns. With the introduction of computers, punched cards were more and more
+replaced by magnetic tape [1].
+Since then, much has changed. Digital technology has found its way into almost every
+sphere of our lives. Smartphones are permanently connected to the Internet. Cloud
+computing and software as a service offer new ways of computing but may entail new
+targets for cyber attacks. Data-centered economy becomes more and more important.
+With increasing amounts of data, the demand for high-capacity storage media will
+continue growing as well.

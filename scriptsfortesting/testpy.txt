@@ -1,0 +1,59 @@
+# Python 3.4
+# Datei lesen und mit Zeilennummerierung wieder ausgeben
+# 'a' fuer anhaengen
+# Erlaubte Zeichenkodierung:
+# ANSI mit Umlauten und Eszett
+# Zeilenende Windows- oder Unixformat
+# Vorsicht mit Unicode, besonders mit Anfuehrungszeichen und Bindestrichen
+#
+# Dateien definieren
+eingabe= "foo2.txt"
+ausgabe= "foo3.txt"
+#
+fobj_vb = open(ausgabe, "w")
+fobj_vb.write("Inhalt der Datei " + eingabe+":\r\n")
+fobj_vb.write("=" * 26+"\r\n")
+fobj_vb.close()
+
+fobj_in = open(eingabe, "r")
+fobj_out = open(ausgabe,"a")
+i = 1
+for line in fobj_in:
+    print(line.rstrip())
+    fobj_out.write(str(i) + ": " + line)
+    i = i + 1
+
+fobj_in.close()
+fobj_out.close()
+
+# THis is a test.
+class FileMenu:
+	"""Interactive console menu for selecting the text files."""
+	def __init__(self):
+		self.__progtitle = "\n ."+("_"*27)+". \n||      Word Occurrence      ||"+"\n"+("="*31)+"\n\n "\nHello user!\r\n"
+		self.__again= True
+		self.InputFileList=[]
+		self.OutputFilename = "WordStati__Outputfile.txt"
+		self.UIStr = "WordStati__Inputfile.txt"
+		self.IfFurther = ""
+#
+	def SetInputFilesList(self):
+		""" interactive method that lets a user type in filenames one-by-one or in a comma-separated sequence"""
+		while self.__again==True:
+			ques = "".join([self.__progtitle , 
+				"Which text file(s) do you want to filter?\n",
+				"Files should be in the active directory, or (relative) paths,\n",
+				"Note: strictly avoid commas and blanks in filenames",
+				"Example: file1.txt, file2.txt .\r\n"])
+			self.UIStr= input(ques)
+			self.IfFurther= input("Further file(s)? (j or y):")
+			if self.IfFurther=="j" or self.IfFurther=="y":
+				self.__again=True
+			else:
+				self.__again=False
+				print("File input completed.\n")
+			zz = re.sub("[|<>]","",self.UIStr)
+			self.UIStr = zz
+			zi = self.UIStr.split(", ")
+			for x in zi:
+				self.InputFileList.append(x)
