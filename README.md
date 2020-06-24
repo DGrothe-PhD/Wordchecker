@@ -29,7 +29,7 @@ Das Projekt enthält ein Python-Skript, das Wörter in Textdateien zählt. In ei
 
 Es soll eine Schnelldurchsicht nach verwendeten Wörtern ermöglicht werden. Uneinheitlichkeiten (denselben Begriff mal mit Bindestrich und mal ohne) oder Tippfehler sowie OCR-Erkennungsfehler lassen sich leichter auffinden.
 
-# Funktionsweise
+## Funktionsweise
 
 Es werden einige Zeichen, vor allem Kommas, Punkte sowie außen stehende Klammern, entfernt, bevor ein Wort registriert wird. Dies glättet den Wortschatz etwas, durch Beibehaltung der Zeichen, die im Wort auftauchen, werden allerdings auch Tippfehler wie fehlende Leerzeichen nach einer schließenden Klammer registriert. Andererseits werden auch die URLs unverändert belassen, damit etwa Low-Level-Domains nicht als Einzelwortbrocken mitzählen.
 
