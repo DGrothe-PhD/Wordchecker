@@ -1,6 +1,9 @@
+#!/usr/bin/python 3
 # -*- coding: utf-8 -*-
+
 ''' Python Module "WordToolBox"
 '''
+import os
 import re
 
 class TextToolBox:
@@ -8,6 +11,7 @@ class TextToolBox:
 	def __init__(self, list_of_files, file_out):
 		self.list_of_files = list_of_files
 		self.file_out = file_out
+		self.__thebom='\xef\xbb\xbf'
 		self.WordList = []
 		self.KWordList = [] # for comments in codes
 		self.alphlist = []
@@ -16,8 +20,8 @@ class TextToolBox:
 		self.KCountingWords = {}
 
 # @todo: make these work
-	def SetSearchWords(self, wort, *wordseq):
-		self.WordList.append(str(wort))
+	def SetSearchWords(self, w, *wordseq):
+		self.WordList.append(str(w))
 		for q in wordseq:
 			self.WordList.append(str(q))
 
@@ -30,9 +34,19 @@ class TextToolBox:
 				dic[q]+=1
 		return dic
 	
+	#plan: to search for word sequences as 'John Doe' and 'Max Mustermann'
+	def SetAskWords(self):
+		pathsw = input("Please enter a path to a file wherein search words have been entered, each in one line")
+		filename = input("Please enter the filename. ")
+		SWF = os.path.join(pathsw, filename)
+		with open(SWF, "r+") as SWF_in:
+			for line in SWF_in:
+				q = line.rstrip()
+				if len(q)>0:
+					self.SetSearchWords(q)
+
 
 # ignore some punctuation for counting word occurences
-# a point in the 
 	def brush(self,y):
 		y=y.rstrip(",.;:!?")
 		y=y.lstrip("¿¡")
@@ -89,10 +103,21 @@ class TextToolBox:
 	def CollectData(self,eing, OnlySearchWords=False):
 		"""Read file line by line and register the words in CountingWords dictionnary"""
 		with open(eing, "r+") as fobj_in:
+			self.numoflines = 0
+			self.numofwords = 0
 			for line in fobj_in:
 				zl = line.rstrip()
+				self.numoflines+=1
+				# if there's a BOM then ignore it
+				if zl.find(self.__thebom)==0:
+					zl = zl[3:]
+				# ignore empty lines
+				if len(zl)==0:
+					continue
+				# Word occurrence algorithm
 				wo = zl.split()
 				linebuff=[]
+				self.numofwords+=len(wo)
 				for w in wo:
 					linebuff.append(self.CharSweeper(w))
 				for w in linebuff:
@@ -101,7 +126,6 @@ class TextToolBox:
 					else:
 						self.WordFinder(w, self.CountingWords)
 		fobj_in.close()
-		return 0
 
 	def CollectDataWithPoint(self,eing):
 		"""For counting words and expressions in programming scripts"""
@@ -118,18 +142,23 @@ class TextToolBox:
 				# filter and split text
 				lz = self.CharSweeperProgStyle(line.rstrip())
 				woli = lz.split()
-				for wort in woli: # count words in text
-					self.WordFinder(wort, self.CountingWords)
+				for w in woli: # count words in text
+					self.WordFinder(w, self.CountingWords)
 				if pycommentfound:
 					# filter and split comment
 					lz = self.CharSweeperProgStyle(komm.rstrip())
 					woli = lz.split()
-					for wort in woli:
-						self.WordFinder(wort, self.KCountingWords)
+					for w in woli:
+						self.WordFinder(w, self.KCountingWords)
 		fobj_in.close()
 
+	#next issue
+	def CollectDataWithRefSigns(self, x):
+		pass
+		
 	def SetAlphList(self,dic):
 		"""Sort alphabetically"""
+		self.numofentries=len(dic)
 		for q in dic.keys():
 			self.alphlist.append(q)
 		self.alphlist.sort()
@@ -162,44 +191,56 @@ class TextToolBox:
 						else:
 							print(f"Something strange happened: {q} isn't found in CountingWords!")
 							break
+			fobj_vb.write(f"\nFile: {self.numoflines} lines ==> {self.numofwords} words (estimated), {self.numofentries} entries.\n")
 		fobj_vb.close()
 
 	def helping(self):
 		dht = "Display helping text.\n"
 		print("Usage:\n======\n\n","--help or /? :\n\t ",dht,
 		"no args  Word statistics in normal mode.\n",
-		"--prog or /p :\n\t"," Word stats on Py scripts to collect \n","\t ","variable and obj.attribute names.\n")
+		"--prog or /p :\n\t", " Word stats on Py scripts to collect \n","\t ","variable and obj.attribute names.\n",
+		"--search or /s :\n\t", "Search for user-defined search terms.\n")
 
-	def Finish(self):
+	def Finish(self, x):
+		print(f"Finished on {x}")
 		self.SetAlphList(self.CountingWords)
 		self.SaveData()
 		self.CleanUp()
 
 	def WordStatistics(self, opmode="textual"):
-		opmodelist=["textual", "search", "programmer"]
+		opmodelist = ["textual", "search", "programmer"]#"refsigns", 
 		if opmode in opmodelist:
 			self.Initialize()
 			print(f"Word statistics in {opmode} mode.")
 		# Parts
-		if opmode=="textual":
+		if opmode == "textual":
 			for x in self.list_of_files:
 				self.WriteSection(x)
-				self.CollectData(x)
-				print("Finished on " + x)
-				self.Finish()
-		elif opmode=="search":
-			pass
-			# @todo search word mode to be implemented
-			#this will use SetSearchWords(args)
-			#and self.CollectData(x,True)
-		elif opmode=="programmer":
+				self.CollectData(x, False)
+				self.Finish(x)
+		# Search part
+		elif opmode == "search":
+			self.SetAskWords()
+			for x in self.list_of_files:
+				self.WriteSection(x)
+				self.CollectData(x, True)
+				self.Finish(x)
+		# Programmer part
+		elif opmode == "programmer":
 			for x in self.list_of_files:
 				self.WriteSection(x)
 				self.CollectDataWithPoint(x)
-				print("Finished on " + x)
 				self.SetKAlphList(self.KCountingWords)
-				self.Finish()
-		elif opmode=="help":
+				self.Finish(x)
+		# Refsigns part
+		elif opmode == "refsigns":
+			print("not ready yet")
+			'''for x in self.list_of_files:
+				self.WriteSection(x)
+				self.CollectDataWithRefSigns(x)
+				self.Finish()'''
+		# Helping part
+		elif opmode == "help":
 			self.helping()
 		else:
 			self.helping()

@@ -1,3 +1,4 @@
+#!/usr/bin/python 3
 # -*- coding: utf-8 -*-
 ''' Python 
 '''
@@ -47,11 +48,17 @@ class FileMenu:
 		self.InputFileList = glob.glob(os.path.join(pathanswer, fileprefix+"*.txt"))
 #
 	def SetOutputFile(self):
-		ausg = input("Where do you want to save the filtered word list?:")
-		if len(ausg)>3:
-			austxt = ausg.rstrip(".txt")
-			if len(austxt)>0:
-				self.OutputFilename = austxt +".txt"
+		tooshort=True
+		while tooshort:
+			a = input("Where do you want to save the filtered word list?:")
+			if len(a)>3:
+				tooshort=False
+				if not(len(a)>4 and a.endswith(".txt")):
+					self.OutputFilename = a +".txt"
+				else:
+					self.OutputFilename = a
+			else:
+				print("That filename was too short.")
 #
 	def GetOutputFile(self):
 		return self.OutputFilename

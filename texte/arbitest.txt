@@ -2,4 +2,3 @@
 Anno Krug: Eine Stellenanzeige suchte ein/eine Lehrer/in für ein Schulfach. Dann setzte es sich durch, dass nunmehr Berufsbezeichnungen in der männlichen Form mit "(w/m/d)" gekennzeichnet werden. (Der Schrägstrich hat sich seither in den meisten Fällen erübrigt)
 This way, some type(s of typos are found as unbalanced brackets aren't stripped(such as if a blank was omitted). Every master student of physics knows that sin(Pi)=0. URLs like https://de.wikipedia.org/wiki/Wikipedia:Hauptseite should not be split and counted as sequences of separated "words".
 There are examples (as here!), wherein an exclamation mark is followed by a bracket and a comma.
-William Shakespeare [ˈwɪljəm ˈʃeɪkspɪə] (getauft am 26. April 1564(jul.) in Stratford-upon-Avon; † 23. April(jul.)/ 3. Mai 1616(greg.) ebenda[1]) war ein englischer Dramatiker, Lyriker und Schauspieler.

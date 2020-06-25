@@ -1,5 +1,5 @@
 # Word Checker
-Counts word occurrences in text files and results are saved in alphabetical order in a text file. Results are summarized for each source text file.
+Counts word occurrences in text files and results are saved in alphabetical order in a text file. Results are summarized for each source text file. Works best if the text files are saved as UTF-8 (with or without BOM), for example with Windows Notepad or Notepad++. The 3-byte BOM which can occur at the beginning of an UTF-8 file, is skipped so that the first word of the file is registered as a "normal word".
 
 Some characters, especially commas, periods and parentheses after a word, are removed before a word is registered. This smoothes the vocabulary somewhat, but by keeping the punctuation inside of a word if any (such as "2.0"), typos such as missing spaces after a comma are also registered after a closing bracket. URLs or compositions with slashes are not split up so that low-level domains or word endings (such as the "s" in "file(s)") are not counted as separate words.
 
@@ -9,11 +9,12 @@ At the first user prompt, insert a (relative) path, and any `*.txt` file inside 
 On Windows, for example, entries such as C:\Users\FooBar\texte or ./subfolder1 both work fine.
 Some rudimentary programmer mode for scanning (python) scripts is also implemented.
 
+Multiple-term search: checking only the occurrence of multiple search terms defined by the user. To avoid coding misinterpretation of non-ASCII letters by the DOS command-line input, the search words cannot be entered at the command line but have to be stored in a UTF-8 text file in advance. Then run `python WordOcc.py /s` .
+
 ## Effect
 Typos and inconsistencies in the used terms in large files can be easilier found. Such as inconsistency regarding hyphen usage or using similar terms, such as "disc" and "disk", for the same object.
 
 ## Next tasks
- * Multiple-term search: checking occurrence of multiple user-defined search terms
  * Some syntax highlighting for similar words
 
 ## Requirements

@@ -1,0 +1,10 @@
+﻿This_is_an_example_for_reference_signs
+Wir haben einen Fernseher (1), der über ein Antennenkabel (2) mit der Antennendose (3A) verbunden ist. 
+Figur 1
+1	Fernseher
+2	Antennenkabel
+3A	Antennendose (zumeist bereits vorhanden)
+Figur 2
+7	Spezialteil
+8	Zweites Spezialteil
+99	Außenwand
