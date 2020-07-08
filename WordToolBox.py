@@ -4,6 +4,7 @@
 ''' Python Module "WordToolBox"
 '''
 import os
+import sys
 import re
 
 class TextToolBox:
@@ -12,6 +13,9 @@ class TextToolBox:
 		self.list_of_files = list_of_files
 		self.file_out = file_out
 		self.__thebom='\xef\xbb\xbf'
+		self.__brackets = {"(":")", "[":"]", "{":"}", "\"":"\"", "„":"“", "«":"»", "»":"«"}
+		self.__lbs = list(self.__brackets.keys())
+		self.__rbs = list(self.__brackets.values())
 		self.WordList = []
 		self.KWordList = [] # for comments in codes
 		self.alphlist = []
@@ -36,9 +40,17 @@ class TextToolBox:
 	
 	#plan: to search for word sequences as 'John Doe' and 'Max Mustermann'
 	def SetAskWords(self):
-		pathsw = input("Please enter a path to a file wherein search words have been entered, each in one line")
-		filename = input("Please enter the filename. ")
-		SWF = os.path.join(pathsw, filename)
+		inc = True
+		while inc:
+			pathsw = input("Please enter a PATH to a file\n   wherein search words have been entered each in one line (or q for quitting): ")
+			if pathsw is "Q" or pathsw is "q":
+				sys.exit()
+			filename = input("Please enter a filename: ")
+			SWF = os.path.join(pathsw, filename)
+			if os.path.exists(SWF):
+				inc = False
+			else:
+				print(f"File {SWF} does not exist.")
 		with open(SWF, "r+") as SWF_in:
 			for line in SWF_in:
 				q = line.rstrip()
@@ -47,24 +59,55 @@ class TextToolBox:
 
 
 # ignore some punctuation for counting word occurences
-	def brush(self,y):
+	def brush(self, y):
 		y=y.rstrip(",.;:!?")
 		y=y.lstrip("¿¡")
 		return y
+	
 
-	def CharSweeper(self,tx):
+	def GBR(self, tx):
+		a=[]
+		for x in tx[::-1]:
+			if x in self.__rbs:
+				a.append(x)
+			elif x.isalnum():
+				break
+		return a
+	
+	def GBL(self,tx):
+		a = []
+		for x in tx:
+			if x in self.__lbs:
+				a.append(x)
+			elif x.isalnum():
+				break
+		return a
+	
+	def CharSweeper(self, tx):
 		"""removes most of punctuation from words"""
-		bracket={"(":")", "[":"]", "{":"}", "\"":"\"", "„":"“", "«":"»", "»":"«"}
-		y = self.brush(tx)
 		#keep pairs of brackets and pairs of quotation marks in the same word
-		for u in bracket.keys():
-			if (y.find(u)>-1) ^ (y.find(bracket[u])> -1 ):
-				y=y.rstrip(bracket[u])
-				y=y.lstrip(u)
-		y = self.brush(y)
+		y=tx
+		atright= self.GBR(y)
+		atleft = self.GBL(y)
+		sl="¿¡"
+		sr=",.;:!?"
+		for u in atleft:
+			pos = [y.find(u), y.rfind(self.__brackets[u])]
+			# if exclusively opening or closing brackets
+			if max(pos)>-1 and (min(pos)==max(pos) or min(pos)==-1):
+				sl+=u
+		y = y.lstrip(sl)
+		#
+		for u in atright:
+			nu = self.__lbs[self.__rbs.index(u)]
+			pos = [y.find(nu), y.rfind(u)]
+			# if exclusively opening or closing brackets
+			if max(pos)>-1 and (min(pos)==max(pos) or min(pos)==-1):
+				sr+=u
+		y=y.rstrip(sr)
 		return y
 
-	def CharSweeperProgStyle(self,tx):
+	def CharSweeperProgStyle(self, tx):
 		"""remove any punctuation while keeping OOP class-member syntax '.:' in programming code"""
 		y=tx
 		for u in ",;\"\\/()[]{}!?":
@@ -86,11 +129,12 @@ class TextToolBox:
 			fobj_vb.write("Result of word counting:\n"+bar)
 		fobj_vb.close()
 	
-	def WriteSection(self,the_file):
+	def WriteSection(self, the_file):
 		"""Write section line to file"""
 		with open(self.file_out, "a") as fobj_vb:
 			bar = "\n"+"="*12+"\n"
 			fobj_vb.write("\nFile: "+the_file+bar)
+			print(f"Reading file {the_file}.")
 		fobj_vb.close()
 
 	def CleanUp(self):
@@ -100,14 +144,14 @@ class TextToolBox:
 		self.CountingWords.clear()
 		self.KCountingWords.clear()
 
-	def CollectData(self,eing, OnlySearchWords=False):
+	def CollectData(self, eing, OnlySearchWords=False):
 		"""Read file line by line and register the words in CountingWords dictionnary"""
 		with open(eing, "r+") as fobj_in:
-			self.numoflines = 0
-			self.numofwords = 0
+			self.n_lins = 0
+			self.n_wds = 0
 			for line in fobj_in:
 				zl = line.rstrip()
-				self.numoflines+=1
+				self.n_lins+=1
 				# if there's a BOM then ignore it
 				if zl.find(self.__thebom)==0:
 					zl = zl[3:]
@@ -117,7 +161,7 @@ class TextToolBox:
 				# Word occurrence algorithm
 				wo = zl.split()
 				linebuff=[]
-				self.numofwords+=len(wo)
+				self.n_wds+=len(wo)
 				for w in wo:
 					linebuff.append(self.CharSweeper(w))
 				for w in linebuff:
@@ -127,7 +171,7 @@ class TextToolBox:
 						self.WordFinder(w, self.CountingWords)
 		fobj_in.close()
 
-	def CollectDataWithPoint(self,eing):
+	def CollectDataWithPoint(self, eing):
 		"""For counting words and expressions in programming scripts"""
 		with open(eing, "r+") as fobj_in:
 			for line in fobj_in:
@@ -156,15 +200,16 @@ class TextToolBox:
 	def CollectDataWithRefSigns(self, x):
 		pass
 		
-	def SetAlphList(self,dic):
+	def SetAlphList(self, dic):
 		"""Sort alphabetically"""
-		self.numofentries=len(dic)
+		self.n_keys = len(dic)
+		self.n_ens=sum(dic.values())
 		for q in dic.keys():
 			self.alphlist.append(q)
 		self.alphlist.sort()
 		return self.alphlist
 
-	def SetKAlphList(self,dic):
+	def SetKAlphList(self, dic):
 		"""Sort comment words alphabetically"""
 		for q in dic.keys():
 			self.kalphlist.append(q)
@@ -175,23 +220,23 @@ class TextToolBox:
 		"""Save data in output file"""
 		with open(self.file_out, "a") as fobj_vb:
 			for q in self.alphlist:
-				for teil in [q]:
-					if (q in self.CountingWords):
-						fobj_vb.write("\t".join([q, str(self.CountingWords[q])]) +"\n")
-					else:
-						print(f"Something strange happened: {q} isn't found in CountingWords!")
-						break
+			#	for teil in [q]:
+				if (q in self.CountingWords):
+					fobj_vb.write(f"{q}\t{self.CountingWords[q]}\n")
+				else:
+					print(f"Something strange happened: {q} isn't found in CountingWords!")
+					break
 			if len(self.kalphlist) > 0:
 				print("__ Found some comments. __\n")
 				fobj_vb.write("\n__ Found comments with following words therein:__\n")
 				for q in self.kalphlist:
-					for teil in [q]:
-						if (q in self.KCountingWords):
-							fobj_vb.write("\t".join([q, str(self.KCountingWords[q])]) +"\n")
-						else:
-							print(f"Something strange happened: {q} isn't found in CountingWords!")
-							break
-			fobj_vb.write(f"\nFile: {self.numoflines} lines ==> {self.numofwords} words (estimated), {self.numofentries} entries.\n")
+			#		for teil in [q]:
+					if (q in self.KCountingWords):
+						fobj_vb.write(f"{q}\t{self.KCountingWords[q]}\n")
+					else:
+						print(f"Something strange happened: {q} isn't found in CountingWords!")
+						break
+			fobj_vb.write(f"\nFile: {self.n_lins} lines ==> {self.n_wds} words (estimated), {self.n_ens} findings of {self.n_keys} different words.\n")
 		fobj_vb.close()
 
 	def helping(self):

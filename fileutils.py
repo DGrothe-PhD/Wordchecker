@@ -72,7 +72,7 @@ class FileMenu:
 			print(" - "+x)
 		print("\nwill be saved in " + self.OutputFilename + ".\n")
 		yesno= input("Is that okay? (j or y)")
-		if yesno[0] =="j" or yesno[0]=="y":
+		if yesno == '' or yesno[0] =="j" or yesno[0]=="y":
 			stat = True
 		else:
 			stat = False

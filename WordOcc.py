@@ -1,6 +1,6 @@
 #!/usr/bin/python 3
 # -*- coding: utf-8 -*-
-''' Python 3'''
+''' Main script '''
 import sys
 from fileutils import FileMenu
 from WordToolBox import TextToolBox
