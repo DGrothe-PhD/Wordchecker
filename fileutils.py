@@ -36,14 +36,26 @@ class FileMenu:
 			zi = self.UIStr.split(", ")
 			for x in zi:
 				self.InputFileList.append(x)
-#
+#######
+			if os.path.exists(SWF):
+				inc = False
+			else:
+				print(f"File {SWF} does not exist.")
+
+
 	def SetInputGlobbedFilesList(self):
-		ques = "".join([self.__progtitle , 
-			"Write down a path name such as \"./subfolder\" or\r\n",
-			" \"C:\\Users\\XYZ\\Documents\\\".\r\n"])
-		pathanswer = input(ques)
+		inc = True
+		while inc:
+			ques = "".join([self.__progtitle , 
+			 "Write down a path name such as \"./subfolder\" or\r\n",
+			 " \"C:\\Users\\XYZ\\Documents\\\".\r\n"])
+			pathanswer = input(ques)
+			if os.path.exists(pathanswer):
+				inc = False
+			else:
+				print(f"\n Error: Path {pathanswer} does not exist.")
 		fileprefix = ""
-		ques = "Special prefix or use any *.txt files in that subfolder?\n  (Just press enter if *.txt is okay)\n"
+		ques = "Special prefix or use all *.txt files in that subfolder?\n  (Just press enter if 'all *.txt' is okay)\n"
 		fileprefix = input(ques)
 		self.InputFileList = glob.glob(os.path.join(pathanswer, fileprefix+"*.txt"))
 #
