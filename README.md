@@ -11,6 +11,20 @@ Some rudimentary programmer mode for scanning (python) scripts is also implement
 
 Multiple-term search: checking only the occurrence of multiple search terms defined by the user. To avoid coding misinterpretation of non-ASCII letters by the DOS command-line input, the search words cannot be entered at the command line but have to be stored in a UTF-8 text file in advance. Then run `python WordOcc.py /s` .
 
+You can use the following command line arguments.
+
+| Argument      | Description   |
+| ------------- | ------------- |
+| --help  or /?    | Display usage options              |
+| --prog or /p     | Find words, commands and class objects in programming files |
+| --refs or /r     | (under construction) gather words together with reference signs, such as `cable (17)` |
+| --search or /s   | Only search for user-specified search terms |
+
+Example:
+```
+python WordOcc.py --search
+```
+
 ## Effect
 Typos and inconsistencies in the used terms in large files can be easilier found. Such as inconsistency regarding hyphen usage or using similar terms, such as "disc" and "disk", for the same object.
 
