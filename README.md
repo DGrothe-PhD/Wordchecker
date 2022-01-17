@@ -35,6 +35,7 @@ Typos and inconsistencies in the used terms in large files can be easilier found
 Written in Python 3 (works with e.g. version 3.8.1), these modules are imported: 
 `sys, re, glob, os`
 
+See also https://github.com/DGrothe-PhD/WordCheckerJava
 <hr>
 
 # German
@@ -49,3 +50,5 @@ Es soll eine Schnelldurchsicht nach verwendeten Wörtern ermöglicht werden. Une
 Es werden einige Zeichen, vor allem Kommas, Punkte sowie außen stehende Klammern, entfernt, bevor ein Wort registriert wird. Dies glättet den Wortschatz etwas, durch Beibehaltung der Zeichen, die im Wort auftauchen, werden allerdings auch Tippfehler wie fehlende Leerzeichen nach einer schließenden Klammer registriert. Andererseits werden auch die URLs unverändert belassen, damit etwa Low-Level-Domains nicht als Einzelwortbrocken mitzählen.
 
 Um auch europäische Sprachen außer Englisch verwenden zu können, speichert man die Textdateien am besten im UTF-8-Format, dies ermöglicht der Windows bekannte Editor in den heutigen Windows-Versionen üblicherweise durch einen einfachen Mausklick. Apostrophs und Wörter mit Nicht-ASCII-Buchstaben (étagère, ça) sollten so ebenfalls korrekt verarbeitet werden.
+
+Siehe auch https://github.com/DGrothe-PhD/WordCheckerJava
