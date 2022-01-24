@@ -10,6 +10,7 @@ import re
 class TextToolBox:
 	""" Filters word occurrences from texts, alphabetically"""
 	def __init__(self, list_of_files, file_out):
+		self.i=0
 		self.list_of_files = list_of_files
 		self.file_out = file_out
 		self.__thebom='\xef\xbb\xbf'
@@ -127,6 +128,7 @@ class TextToolBox:
 		with open(self.file_out, "w") as fobj_vb:
 			bar = "\n"+"="*12+"\n"
 			fobj_vb.write("Result of word counting:\n"+bar)
+		self.i+=1
 		fobj_vb.close()
 	
 	def WriteSection(self, the_file):
@@ -135,7 +137,8 @@ class TextToolBox:
 			bar = "\n"+"="*12+"\n"
 			fobj_vb.write("\nFile: "+the_file+bar)
 			print(f"Reading file {the_file}.")
-		fobj_vb.close()
+			self.i+=1
+			fobj_vb.close()
 
 	def CleanUp(self):
 		"""Reset the buffer variables"""
@@ -169,6 +172,7 @@ class TextToolBox:
 						self.SearchWordFinder(w, self.CountingWords)
 					else:
 						self.WordFinder(w, self.CountingWords)
+		self.i+=1
 		fobj_in.close()
 
 	def CollectDataWithPoint(self, eing):
@@ -194,6 +198,7 @@ class TextToolBox:
 					woli = lz.split()
 					for w in woli:
 						self.WordFinder(w, self.KCountingWords)
+		self.i+=1
 		fobj_in.close()
 
 	#next issue
@@ -237,6 +242,7 @@ class TextToolBox:
 						print(f"Something strange happened: {q} isn't found in CountingWords!")
 						break
 			fobj_vb.write(f"\nFile: {self.n_lins} lines ==> {self.n_wds} words (estimated), {self.n_ens} findings of {self.n_keys} different words.\n")
+		self.i+=1
 		fobj_vb.close()
 
 	def helping(self):
@@ -251,6 +257,7 @@ class TextToolBox:
 		self.SetAlphList(self.CountingWords)
 		self.SaveData()
 		self.CleanUp()
+		print(f"Es wurde {self.i} mal Datei geschlossen")
 
 	def WordStatistics(self, opmode="textual"):
 		opmodelist = ["textual", "search", "programmer"]#"refsigns", 
