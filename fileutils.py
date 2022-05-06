@@ -18,7 +18,7 @@ class FileMenu:
 #
 	def SetInputFilesList(self):
 		""" interactive method that lets a user type in filenames one-by-one or in a comma-separated sequence"""
-		while self.__again==True:
+		while self.__again is True:
 			ques = "".join([self.__progtitle , 
 				"Which text file(s) do you want to filter?\n",
 				"Files should be in the active directory, or (relative) paths,\n",
@@ -84,10 +84,7 @@ class FileMenu:
 			print(" - "+x)
 		print("\nwill be saved in " + self.OutputFilename + ".\n")
 		yesno= input("Is that okay? (j or y)")
-		if yesno == '' or yesno[0] =="j" or yesno[0]=="y":
-			stat = True
-		else:
-			stat = False
+		stat = (yesno == '' or yesno[0] =="j" or yesno[0]=="y")
 		return stat
 #
 	def FileManager(self,globbing=True):
