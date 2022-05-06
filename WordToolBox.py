@@ -44,7 +44,7 @@ class TextToolBox:
 		inc = True
 		while inc:
 			pathsw = input("Please enter a PATH to a file\n   wherein search words have been entered each in one line (or q for quitting): ")
-			if pathsw is "Q" or pathsw is "q":
+			if pathsw == "Q" or pathsw == "q":
 				sys.exit()
 			filename = input("Please enter a filename: ")
 			SWF = os.path.join(pathsw, filename)
@@ -125,7 +125,7 @@ class TextToolBox:
 
 	def Initialize(self):
 		"""Write headline to file"""
-		with open(self.file_out, "w") as fobj_vb:
+		with open(self.file_out, "w", encoding="utf_8") as fobj_vb:
 			bar = "\n"+"="*12+"\n"
 			fobj_vb.write("Result of word counting:\n"+bar)
 		self.i+=1
@@ -133,7 +133,7 @@ class TextToolBox:
 	
 	def WriteSection(self, the_file):
 		"""Write section line to file"""
-		with open(self.file_out, "a") as fobj_vb:
+		with open(self.file_out, "a", encoding="utf_8") as fobj_vb:
 			bar = "\n"+"="*12+"\n"
 			fobj_vb.write("\nFile: "+the_file+bar)
 			print(f"Reading file {the_file}.")
@@ -223,7 +223,7 @@ class TextToolBox:
 
 	def SaveData(self):
 		"""Save data in output file"""
-		with open(self.file_out, "a") as fobj_vb:
+		with open(self.file_out, "a", encoding="utf_8") as fobj_vb:
 			for q in self.alphlist:
 			#	for teil in [q]:
 				if (q in self.CountingWords):
