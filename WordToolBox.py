@@ -52,7 +52,7 @@ class TextToolBox:
 				inc = False
 			else:
 				print(f"File {SWF} does not exist.")
-		with open(SWF, "r+") as SWF_in:
+		with open(SWF, "r+", encoding='utf-8') as SWF_in:
 			for line in SWF_in:
 				q = line.rstrip()
 				if len(q)>0:
@@ -149,7 +149,7 @@ class TextToolBox:
 
 	def CollectData(self, eing, OnlySearchWords=False):
 		"""Read file line by line and register the words in CountingWords dictionnary"""
-		with open(eing, "r+") as fobj_in:
+		with open(eing, "r+", encoding='utf-8') as fobj_in:
 			self.n_lins = 0
 			self.n_wds = 0
 			for line in fobj_in:
@@ -177,7 +177,7 @@ class TextToolBox:
 
 	def CollectDataWithPoint(self, eing):
 		"""For counting words and expressions in programming scripts"""
-		with open(eing, "r+") as fobj_in:
+		with open(eing, "r+", encoding='utf-8') as fobj_in:
 			for line in fobj_in:
 				pycommentfound = (line.find("#")>=0)
 				# @todo finding multiline comments
