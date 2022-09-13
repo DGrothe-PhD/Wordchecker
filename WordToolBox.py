@@ -24,7 +24,6 @@ class TextToolBox:
 		self.CountingWords = {}
 		self.KCountingWords = {}
 
-# @todo: make these work
 	def SetSearchWords(self, w, *wordseq):
 		self.WordList.append(str(w))
 		for q in wordseq:
@@ -57,7 +56,6 @@ class TextToolBox:
 				q = line.rstrip()
 				if len(q)>0:
 					self.SetSearchWords(q)
-
 
 # ignore some punctuation for counting word occurences
 	def brush(self, y):
@@ -257,7 +255,6 @@ class TextToolBox:
 		self.SetAlphList(self.CountingWords)
 		self.SaveData()
 		self.CleanUp()
-		print(f"Es wurde {self.i} mal Datei geschlossen")
 
 	def WordStatistics(self, opmode="textual"):
 		opmodelist = ["textual", "search", "programmer"]#"refsigns", 
