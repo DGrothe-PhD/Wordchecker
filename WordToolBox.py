@@ -24,6 +24,7 @@ class TextToolBox:
 		self.CountingWords = {}
 		self.KCountingWords = {}
 
+# @todo: make these work
 	def SetSearchWords(self, w, *wordseq):
 		self.WordList.append(str(w))
 		for q in wordseq:
@@ -51,11 +52,12 @@ class TextToolBox:
 				inc = False
 			else:
 				print(f"File {SWF} does not exist.")
-		with open(SWF, "r+", encoding='utf-8') as SWF_in:
+		with open(SWF, "r+") as SWF_in:
 			for line in SWF_in:
 				q = line.rstrip()
 				if len(q)>0:
 					self.SetSearchWords(q)
+
 
 # ignore some punctuation for counting word occurences
 	def brush(self, y):
@@ -147,7 +149,7 @@ class TextToolBox:
 
 	def CollectData(self, eing, OnlySearchWords=False):
 		"""Read file line by line and register the words in CountingWords dictionnary"""
-		with open(eing, "r+", encoding='utf-8') as fobj_in:
+		with open(eing, "r+") as fobj_in:
 			self.n_lins = 0
 			self.n_wds = 0
 			for line in fobj_in:
@@ -175,16 +177,16 @@ class TextToolBox:
 
 	def CollectDataWithPoint(self, eing):
 		"""For counting words and expressions in programming scripts"""
-		with open(eing, "r+", encoding='utf-8') as fobj_in:
+		with open(eing, "r+") as fobj_in:
 			for line in fobj_in:
 				pycommentfound = (line.find("#")>=0)
 				# @todo finding multiline comments
 				if pycommentfound:
-					lili = line.split("#")
-					line = lili[0]
+					lineBeforeComment = line.split("#")
+					line = lineBeforeComment[0]
 					# is there a text before the # comment so store it
-					del lili[0] # delete text before '#' from the comment
-					komm= "".join(lili) # the comment part
+					del lineBeforeComment[0] # delete text before '#' from the comment
+					commentPart= "".join(lineBeforeComment) # the comment part
 				# filter and split text
 				lz = self.CharSweeperProgStyle(line.rstrip())
 				woli = lz.split()
@@ -192,7 +194,7 @@ class TextToolBox:
 					self.WordFinder(w, self.CountingWords)
 				if pycommentfound:
 					# filter and split comment
-					lz = self.CharSweeperProgStyle(komm.rstrip())
+					lz = self.CharSweeperProgStyle(commentPart.rstrip())
 					woli = lz.split()
 					for w in woli:
 						self.WordFinder(w, self.KCountingWords)
@@ -255,6 +257,7 @@ class TextToolBox:
 		self.SetAlphList(self.CountingWords)
 		self.SaveData()
 		self.CleanUp()
+		print(f"Es wurde {self.i} mal Datei geschlossen")
 
 	def WordStatistics(self, opmode="textual"):
 		opmodelist = ["textual", "search", "programmer"]#"refsigns", 
