@@ -1,7 +1,5 @@
 #!/usr/bin/python 3
 # -*- coding: utf-8 -*-
-''' Python 
-'''
 import re
 import glob
 import os
@@ -33,10 +31,8 @@ class FileMenu:
 				print("File input completed.\n")
 			zz = re.sub("[|<>]","",self.UIStr)
 			self.UIStr = zz
-			zi = self.UIStr.split(", ")
-			for x in zi:
+			for x in self.UIStr.split(", "):
 				self.InputFileList.append(x)
-#######
 			if os.path.exists(SWF):
 				inc = False
 			else:
@@ -65,12 +61,11 @@ class FileMenu:
 			a = input("Where do you want to save the filtered word list?:")
 			if len(a)>3:
 				tooshort=False
+				self.OutputFilename = a
 				if not(len(a)>4 and a.endswith(".txt")):
-					self.OutputFilename = a +".txt"
-				else:
-					self.OutputFilename = a
+					self.OutputFilename += ".txt"
 			else:
-				print("That filename was too short.")
+				print("That filename was too short. Please try again:")
 #
 	def GetOutputFile(self):
 		return self.OutputFilename
@@ -87,7 +82,7 @@ class FileMenu:
 		stat = (yesno == '' or yesno[0] =="j" or yesno[0]=="y")
 		return stat
 #
-	def FileManager(self,globbing=True):
+	def FileManager(self, globbing=True):
 		if globbing:
 			self.SetInputGlobbedFilesList()
 		else:
