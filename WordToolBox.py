@@ -257,7 +257,6 @@ class TextToolBox:
 		self.SetAlphList(self.CountingWords)
 		self.SaveData()
 		self.CleanUp()
-		print(f"Es wurde {self.i} mal Datei geschlossen")
 
 	def WordStatistics(self, opmode="textual"):
 		opmodelist = ["textual", "search", "programmer"]#"refsigns", 
