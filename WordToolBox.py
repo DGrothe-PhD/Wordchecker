@@ -182,11 +182,11 @@ class TextToolBox:
 				pycommentfound = (line.find("#")>=0)
 				# @todo finding multiline comments
 				if pycommentfound:
-					lili = line.split("#")
-					line = lili[0]
+					lineBeforeComment = line.split("#")
+					line = lineBeforeComment[0]
 					# is there a text before the # comment so store it
-					del lili[0] # delete text before '#' from the comment
-					komm= "".join(lili) # the comment part
+					del lineBeforeComment[0] # delete text before '#' from the comment
+					commentPart= "".join(lineBeforeComment) # the comment part
 				# filter and split text
 				lz = self.CharSweeperProgStyle(line.rstrip())
 				woli = lz.split()
@@ -194,7 +194,7 @@ class TextToolBox:
 					self.WordFinder(w, self.CountingWords)
 				if pycommentfound:
 					# filter and split comment
-					lz = self.CharSweeperProgStyle(komm.rstrip())
+					lz = self.CharSweeperProgStyle(commentPart.rstrip())
 					woli = lz.split()
 					for w in woli:
 						self.WordFinder(w, self.KCountingWords)
